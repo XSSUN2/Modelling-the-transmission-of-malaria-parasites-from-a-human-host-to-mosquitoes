@@ -4,7 +4,7 @@ Feeding assay data.csv includes the male and female gametocytemia (measured by P
 
 Uninfected_mosquito.csv and Infected_mosquito.csv are the mosquito survival data.
 
-ABC-SMC_vector.R includes the codes for parameter estimation.
+ABC-SMC_vector.R includes the codes for parameter estimation and the results are saved in fitting_result.RData.
 
 Sensitivityanalysis.R includes the codes for determining the relative contributions of human and mosquito factors to the probability of human-to-mosquito transmission (i.e., PRCC and sensitivity anlysis) and assessing relationship between parasitemia and the transmission probability. 
 
