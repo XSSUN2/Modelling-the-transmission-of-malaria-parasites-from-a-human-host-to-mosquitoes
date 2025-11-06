@@ -6,6 +6,8 @@ Uninfected_mosquito.csv and Infected_mosquito.csv are the mosquito survival data
 
 ABC-SMC_vector.R includes the codes for parameter estimation and the visualization.
 
-Sensitivityanalysis.R includes the codes for determining the relative contributions of human and mosquito factors to the probability of human-to-mosquito transmission (i.e., PRCC and sensitivity anlysis) and assessing relationship between parasitemia and the transmission probability. 
+Sensitivityanalysis.R includes the codes for determining the relative contributions of human and mosquito factors to the probability of human-to-mosquito transmission (i.e., PRCC and sensitivity anlysis), assessing the relationship between parasitemia and the transmission probability and visualization. 
 
 Death rate.R includes the code for estimating the death rate of mosquiotes.
+
+sporo_load_plot.R includes the visualization of sporozoite load.
