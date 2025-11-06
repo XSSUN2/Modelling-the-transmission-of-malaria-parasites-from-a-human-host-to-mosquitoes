@@ -168,10 +168,10 @@ prior_df <- as.data.frame(cbind(z,prior))
 names(prior_df) <- c("x","y")
 
 par(mar=c(5,5, 2,2))
-hist(para[[12]][,1],breaks=80,main="",xlim=c(0,8),ylim=c(0,400),xlab=expression(rho),cex.axis=2,cex.lab=2)
+hist(para[[7]][,1],breaks=80,main="",xlim=c(0,8),ylim=c(0,400),xlab=expression(rho),cex.axis=2,cex.lab=2)
 abline(v=0.933,col="red")
 lines(z, prior,lty=2, lwd = 1)
-legend("topright",lty=c(1,2),col=c("red",1),legend=c("Estimate","Prior"),cex=2,bty="n",lwd=2)
+legend("topright",lty=c(2,2),col=c("red",1),legend=c("Estimate","Prior"),cex=2,bty="n",lwd=2)
 
 
 prior_pf_x <- 0:50/50
@@ -179,15 +179,16 @@ prior_pf_y <- rep(50,51)
 prior_pf <- as.data.frame(cbind(prior_pf_x,prior_pf_y))
 names(prior_pf) <- c("x","y")
 
-hist(para[[12]][,2],breaks=100,main="",xlab=expression(p[f]),xlim=c(0,0.5),ylim=c(0,300),cex.axis=2,cex.lab=2,yaxt="n")
-axis(2,at=c(0,100,200,300),cex.axis=2)
+hist(para[[6]][,2],breaks=100,main="",xlab=expression(p[f]),xlim=c(0,0.5),ylim=c(0,600),cex.axis=2,cex.lab=2,yaxt="n")
+axis(2,at=c(0,200,400,600),cex.axis=2)
 lines(0:1, rep(50,2),lty=2, lwd = 1)
 abline(v=0.0954,col="red")
 legend("topright",lty=c(2,2),col=c("red",1),legend=c("Estimate","Prior"),cex=2,bty="n",lwd=2)
 
 ##HDPI
-hdi(para[[12]][,1], credMass = 0.95)  # credMass = 0.95 表示95%置信区间
-median(para[[12]][,2])
+library(HDInterval)
+hdi(para[[8]][,1], credMass = 0.95) 
+
 
 
 library(MASS)
@@ -195,7 +196,7 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 
-kde <- kde2d(para[[12]][,1],para[[12]][,2], n = 100)
+kde <- kde2d(para[[8]][,1],para[[8]][,2], n = 100)
 dx <- diff(kde$x[1:2])
 dy <- diff(kde$y[1:2])
 cell_area <- dx * dy
@@ -213,8 +214,8 @@ blue_to_yellow <- c("#18244B", "#1D3B72", "#2A5B9D", "#4B7BB7", "#7697C4",
 
 p_main <- ggplot(kde_df, aes(x = x, y = y, fill = z)) +
   geom_raster(interpolate = TRUE) +
-  geom_vline(xintercept = 0.933, color = "red", size = 0.5,linetype="dashed")+
-  geom_hline(yintercept = 0.0954, color = "red", size = 0.5,linetype="dashed")+
+  geom_vline(xintercept = kde_df[which.max(kde$z),]$x, color = "red", size = 0.5,linetype="dashed")+
+  geom_hline(yintercept = kde_df[which.max(kde$z),]$y, color = "red", size = 0.5,linetype="dashed")+
   scale_fill_gradientn(
     colours = c("white", blue_to_yellow),
     name = "Frequency"
@@ -231,22 +232,20 @@ p_main <- ggplot(kde_df, aes(x = x, y = y, fill = z)) +
     axis.text = element_text(size = 24),       # axis tick labels
     axis.title = element_text(size = 24),      # axis titles
     plot.title = element_blank(),  # title
-    #legend.position = "none"
-  )+xlim(0, 8)+ylim(0,0.5)+  # Set x-axis range from 0 to 6
-  geom_point(aes(x = 0.933, y = 0.0954), size = 2,col="red")
+    legend.position = "none"
+  )+xlim(0, 8)+ylim(0,0.3)+  # Set x-axis range from 0 to 6
+  geom_point(aes(x = kde_df[which.max(kde$z),]$x, y = kde_df[which.max(kde$z),]$y), size = 2,col="red")
 
 p_main
-#kde_df[which.max(kde_df$z),]
 
-df <- as.data.frame(para[[12]])
+df <- as.data.frame(para[[7]])
 colnames(df) <- c("rho", "pf")
 
 
-# Top histogram with prior
 p_top <- ggplot(df, aes(x = rho)) +
-  geom_histogram(bins = 80, fill = "lightblue", color = "white") +
+  geom_histogram(bins = 80, fill = "grey", color = "white") +
   geom_line(data = prior_df, aes(x = x, y = y), color = "black", size = 0.5,linetype="dashed") +
-  geom_vline(xintercept = 0.933, color = "red", size = 0.5,linetype="dashed")+
+  geom_vline(xintercept = kde_df[which.max(kde$z),]$x, color = "red", size = 0.5,linetype="dashed")+
   coord_cartesian(xlim = c(0, 8)) +
   theme_minimal(base_size = 14) +
   theme(
@@ -265,12 +264,12 @@ p_top <- ggplot(df, aes(x = rho)) +
     legend.position = "none"
   )
 p_top
-# Right histogram (flipped)
+
 p_right <- ggplot(df, aes(x = pf)) +
-  geom_histogram(bins = 100, fill = "lightblue", color = "white") +
+  geom_histogram(bins = 100, fill = "grey", color = "white") +
   geom_line(data = prior_pf, aes(x = x, y = y), color = "black", size = 0.5,linetype="dashed") +
-  geom_vline(xintercept = 0.0954, color = "red", size = 0.5,linetype="dashed")+
-  coord_flip(xlim=c(0,0.5)) + 
+  geom_vline(xintercept = kde_df[which.max(kde$z),]$y, color = "red", size = 0.5,linetype="dashed")+
+  coord_flip(xlim=c(0,0.3)) + 
   theme_minimal(base_size = 14) +
   theme(
     panel.grid = element_blank(),   
@@ -282,14 +281,13 @@ p_right <- ggplot(df, aes(x = pf)) +
     axis.ticks.x = element_blank(),
     plot.margin = margin(5, 0, 5, 0)            
   )
-# Convert to grobs
+
 g_top   <- ggplotGrob(p_top)
 g_main  <- ggplotGrob(p_main)
 g_right <- ggplotGrob(p_right)
 g_top$widths   <- g_main$widths
 g_right$heights <- g_main$heights
 
-# 组合三图
 grid.newpage()
 grid.layout <- grid.layout(nrow = 2, ncol = 2,
                            widths  = unit(c(4, 1), "null"),

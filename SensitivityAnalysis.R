@@ -59,12 +59,12 @@ parallel::stopCluster(cl)
 benchmark <- c(0.08,7,5.5,71,0.006,0.03,0.0004,0.007,0.02,0.2,0.87, 1.4, 0.07,13.6, 2.7, 17.8, 2.2)
 
 #PRCC transmission probability
-benchmark_mos <- c(4, 0.87, 0.93, 0.095,13.6, 2.7, 17.8, 2.2)
+benchmark_mos <- c(4, 3.44, 0.80, 0.029,13.6, 2.7, 17.8, 2.2)
 set.seed(2)
 A <- randomLHS(1000, 4)
 lhs_para <- matrix(0,1000,4)
 for (i in 1:4) {
-  lhs_para[,i] <- qunif(A[,i], min = 0.5*benchmark_mos[i], max = 1.5*benchmark_mos[i])
+  lhs_para[,i] <- qunif(A[,i], min = 0.25*benchmark_mos[i], max = 1.75*benchmark_mos[i])
 }
 
 trans_prob <- vector()
@@ -194,7 +194,7 @@ for (l in 1:3) {
 
 data_GM_G <- matrix(0,500,2)
 for (i in 1:5) {
-  data_GM_G[((i-1)*100+1):(i*100),1] <- sensitivity_GM_G_all[[3]][,i]
+  data_GM_G[((i-1)*100+1):(i*100),1] <- sensitivity_GM_G_all[[1]][,i]
   data_GM_G[((i-1)*100+1):(i*100),2] <- rep(GF_GM[i],100)
 }
 data_GM_G <- as.data.frame(data_GM_G)
@@ -210,16 +210,16 @@ p=ggplot(data_GM_G, aes(x=GM_G, y=Prob, group=as.factor(GM_G))) +
     panel.grid.minor = element_line(size = 0.25, linetype = 'solid',colour = "grey"),
     axis.line = element_line(size = 0.5, linetype = "solid",
                              colour = "black"),
-    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) + scale_y_continuous(limits=c(0,1)) +scale_x_continuous(breaks = c(2,4,6,8,10,12,14,16))
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) + scale_y_continuous(limits=c(0,0.03)) +scale_x_continuous(breaks = c(2,4,6,8,10,12,14,16))
 p
-ggsave("GM_G3.png", plot = p, width = 8, height = 6)
+ggsave("GM_G1.png", plot = p, width = 8, height = 6)
 
 ###V
 trans_prob <- vector() 
 sensitivity_V <- matrix(0,100,6)
 sensitivity_V_all <- list()
 set.seed(2)
-V <- c(0.1,0.2,0.4,0.8,1.2,1.6)
+V <- c(0.5,1,2,3,4,6)
 G <- c(10^3,10^4,10^5)
 for (l in 1:3) {
   for (i in 1:6) {
@@ -241,7 +241,7 @@ for (l in 1:3) {
 
 data_V <- matrix(0,600,2)
 for (i in 1:6) {
-  data_V[((i-1)*100+1):(i*100),1] <- sensitivity_V_all[[3]][,i]
+  data_V[((i-1)*100+1):(i*100),1] <- sensitivity_V_all[[1]][,i]
   data_V[((i-1)*100+1):(i*100),2] <- rep(V[i],100)
 }
 data_V <- as.data.frame(data_V)
@@ -258,9 +258,9 @@ p <- ggplot(data_V, aes(x=V, y=Prob, group=as.factor(V))) +
     panel.grid.minor = element_line(size = 0.25, linetype = 'solid',colour = "grey"),
     axis.line = element_line(size = 0.5, linetype = "solid",
                              colour = "black"),
-    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) + scale_y_continuous(limits = c(0,1)) +scale_x_continuous(breaks=c(0.2,0.4,0.6,0.8,1,1.2,1.4,1.6))
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) + scale_y_continuous(limits = c(0,0.03035)) +scale_x_continuous()
 p
-ggsave("V3.png", plot = p, width = 8, height = 6)
+ggsave("V1.png", plot = p, width = 8, height = 6)
 
 
 ###rho
@@ -307,7 +307,7 @@ p=ggplot(data_rho, aes(x=rho, y=Prob, group=as.factor(rho))) +
     panel.grid.minor = element_line(size = 0.25, linetype = 'solid',colour = "grey"),
     axis.line = element_line(size = 0.5, linetype = "solid",
                              colour = "black"),
-    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) + scale_y_continuous(limits = c(0,1))
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) + scale_y_continuous(limits = c(0,1))+scale_x_continuous(breaks=c(0,0.5,1,1.5,2))
 p
 ggsave("rho3.png", plot = p, width = 8, height = 6)
 
@@ -316,7 +316,7 @@ trans_prob <- vector()
 sensitivity_pf <- matrix(0,100,6)
 sensitivity_pf_all <- list()
 set.seed(2)
-pf <- c(0.01,0.02,0.04,0.08,0.12,0.16) 
+pf <- c(0.005,0.01,0.02,0.03,0.04,0.05) 
 G <- c(10^3,10^4,10^5)
 for (l in 1:3) {
   for (i in 1:6) {
@@ -338,7 +338,7 @@ for (l in 1:3) {
 
 data_pf <- matrix(0,600,2)
 for (i in 1:6) {
-  data_pf[((i-1)*100+1):(i*100),1] <- sensitivity_pf_all[[3]][,i]
+  data_pf[((i-1)*100+1):(i*100),1] <- sensitivity_pf_all[[2]][,i]
   data_pf[((i-1)*100+1):(i*100),2] <- rep(pf[i],100)
 }
 data_pf <- as.data.frame(data_pf)
@@ -354,9 +354,9 @@ p=ggplot(data_pf, aes(x=pf, y=Prob, group=as.factor(pf))) +
     panel.grid.minor = element_line(size = 0.25, linetype = 'solid',colour = "grey"),
     axis.line = element_line(size = 0.5, linetype = "solid",
                              colour = "black"),
-    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) +scale_y_continuous(limits = c(0,1)) + scale_x_continuous(breaks = c(0,0.04,0.08,0.12,0.16)) 
+    plot.margin = margin(t = 10, r = 10, b = 10, l = 10)) +scale_y_continuous(limits = c(0,0.3)) + scale_x_continuous(breaks = c(0,0.01,0.02,0.03,0.04,0.05)) 
 p
-ggsave("pf3.png", plot = p, width = 8, height = 6)
+ggsave("pf2.png", plot = p, width = 8, height = 6)
 
 ###sensitivity human
 
@@ -687,8 +687,7 @@ plot(1:2880/24,ring,type="l",log = 'y',xlab = "Time post infection (Days)",ylab 
 lines(1:2880/24,simulation[,88]/4000)
 abline(h=1e+05)
 
-
-j=4
+j=2
 for (i in 1:1000) {
   simulation <- try(sto_model((benchmark[1])*4000,benchmark[2],benchmark[3],c(rep(benchmark[4],asymp_time[j]),rep(benchmark[4]-67.38,2880)),matrix(0,2880,3),benchmark[5],benchmark[6],benchmark[7],benchmark[8],benchmark[8],benchmark[9],benchmark[10],al=42,as=25,2880),silent = TRUE)
   ring_record[i,] <- ifelse(rowSums(simulation[,1:25])==0,1,rowSums(simulation[,1:25]))/4000
@@ -697,6 +696,7 @@ for (i in 1:1000) {
   game_female_record[i,] <- as.numeric(simulation[,89])/4000
   print(i)
 }
+save.image("~/Desktop/Within-vector/figure/10_5asym.RData")
 
 library(foreach)
 library(doParallel)
@@ -710,7 +710,7 @@ sporozoite_record <- matrix(0,120,720)
 
 for (j in 1:1000) {
   result <- foreach(i=1:120,.packages=c("rootSolve")) %dopar% {
-    sporozoite_record <- sporozoite_prev(1000,round(game_male_record[j,i*24],0), round(game_female_record[j,i*24],0),0.87,1.4, 0.07,13.6, 2.7, 17.8, 2.2)
+    sporozoite_record <- sporozoite_prev(1000,round(game_male_record[j,i*24],0), round(game_female_record[j,i*24],0),3.44,0.8, 0.029,13.6, 2.7, 17.8, 2.2)
     sporozoite_record
   }
   for (i in 1:120) {
@@ -779,8 +779,8 @@ prob7 <- matrix(0,3,120)
 prob7[1,] <- prob_median
 prob7[2,] <- prob_upper
 prob7[3,] <- prob_lower
-write.csv(asymp10,"asymp10_7.csv",row.names = FALSE)
-write.csv(prob7,"prob10_7.csv",row.names = FALSE)
+write.csv(asymp10,"asymp10_4.csv",row.names = FALSE)
+write.csv(prob7,"prob10_4.csv",row.names = FALSE)
 
 asymp_4 <- read.csv("asymp10_4.csv")
 asymp_5 <- read.csv("asymp10_5.csv")
@@ -791,7 +791,7 @@ prob_5 <- read.csv("prob10_5.csv")
 prob_6 <- read.csv("prob10_6.csv")
 prob_7 <- read.csv("prob10_7.csv")
 
-par(mar = c(5.1, 5.1, 4.1, 1.1))
+par(mar = c(5.1, 5.1, 1.1, 1.1))
 plot(1:2880/24,asymp_4[1,],type="l",xlab = "Day post infection (Days)",ylab="Parasitemia /ml blood",log="y",ylim=c(1,1e+9),col = rgb(192, 192, 192, maxColorValue=255),,cex.axis=2,cex.lab=2,cex.main=2,yaxt="n",xlim=c(-5,120))
 axis(2,at=c(10^0,10^3,10^6,10^9),label=expression(10^0,10^3,10^6,10^9),cex.axis=2)
 polygon(c(1:2880/24, rev(1:2880/24)), c(asymp_4[2,], rev(asymp_4[3,])),
@@ -847,3 +847,78 @@ lines(c(10^4,10^5,10^6,10^7),c(prob_4[2,40],prob_5[2,40],prob_6[2,40],prob_7[2,4
 lines(c(10^4,10^5,10^6,10^7),c(prob_4[3,40],prob_5[3,40],prob_6[3,40],prob_7[3,40]),lty=2,col=rgb(102,0,51, maxColorValue=255, alpha=150))
 legend("topleft",col=c(rgb(102,0,51, maxColorValue=255),rgb(204,0,102, maxColorValue=255),rgb(255,153,204, maxColorValue=255)),legend=c(expression(t==40),expression(t==20),expression(t==18)),lty=1,lwd=3,bty="n",cex=1.5)
 
+
+
+
+
+
+
+sporozoite_count <- function(N, Gm, Gf, V, rho, r, alpha_go, beta_go, alpha_os, beta_os,n_s){
+  a <- 0.0050300 
+  b <- 0.1326802
+  c <- 0.3272420
+  record <- matrix(0, N, 7)
+  M <- rbinom(N,Gm,V/1000)
+  F <- rbinom(N,Gf,V/1000)
+  n <- vector()
+  t <- vector()
+  for (i in 1:N) {
+    n[i] <- rbinom(1,round(min(rho*M[i],F[i]),0),r)
+    p <- runif(1,0,1)
+    t[i] <- 1/b*log(1+log(p)/(-a/b))
+  }
+  record[,c(1,4,5,6)] <- c(n,t,M,F)
+  for (i in 1:N) {
+    if (n[i]!=0){
+      oocy <- rgamma(n[i],alpha_go,beta_go)
+      sporo <- rgamma(n[i],alpha_os,beta_os)
+      p <- runif(1,0,1)
+      t <- 1/b*log(1+log(p)/(-a/b*exp(c)))
+      record[i,2:4] <- c(min(oocy),min(oocy+sporo),t)
+      record[i,7] <- sum(sporo+oocy<=15)*n_s
+    }
+  }
+  return(record)
+}
+
+par(mar = c(5.1, 5.1, 1.1, 1.1))
+plot(1:2880/24, (asymp_4[4,]+asymp_4[7,]), type="l",
+     xlab = "Day post infection (Days)", ylab="Gametocytemia /ml blood",
+     log="y", ylim=c(1,1e+9), col = rgb(198,219,239, maxColorValue=255),
+     cex.axis=2, cex.lab=2, cex.main=2, yaxt="n", xlim=c(-5,120))
+
+axis(2, at=c(10^0,10^3,10^6,10^9),
+     label=expression(10^0,10^3,10^6,10^9), cex.axis=2)
+
+polygon(c(1:2880/24, rev(1:2880/24)),
+        c(ifelse((asymp_4[5,]+asymp_4[8,])<0.001,0.001,(asymp_4[5,]+asymp_4[8,])),
+          rev(ifelse((asymp_4[6,]+asymp_4[9,])<0.001,0.001,(asymp_4[6,]+asymp_4[9,])))),
+        col = rgb(198,219,239, maxColorValue=255, alpha=100), border = NA)
+
+lines(1:2880/24, (asymp_5[4,]+asymp_5[7,]), col = rgb(158,202,225, maxColorValue=255))
+polygon(c(1:2880/24, rev(1:2880/24)),
+        c(ifelse((asymp_5[5,]+asymp_5[8,])<0.001,0.001,(asymp_5[5,]+asymp_5[8,])),
+          rev(ifelse((asymp_5[6,]+asymp_5[9,])<0.001,0.001,(asymp_5[6,]+asymp_5[9,])))),
+        col = rgb(158,202,225, maxColorValue=255, alpha=100), border = NA)
+
+lines(1:2880/24, (asymp_6[4,]+asymp_6[7,]), col = rgb(107,174,214, maxColorValue=255))
+polygon(c(1:2880/24, rev(1:2880/24)),
+        c(ifelse((asymp_6[5,]+asymp_6[8,])<0.001,0.001,(asymp_6[5,]+asymp_6[8,])),
+          rev(ifelse((asymp_6[6,]+asymp_6[9,])<0.001,0.001,(asymp_6[6,]+asymp_6[9,])))),
+        col = rgb(107,174,214, maxColorValue=255, alpha=100), border = NA)
+
+
+lines(1:2880/24, (asymp_7[4,]+asymp_7[7,]), col = rgb(33,113,181, maxColorValue=255))
+polygon(c(1:2880/24, rev(1:2880/24)),
+        c(ifelse((asymp_7[5,]+asymp_7[8,])<0.001,0.001,(asymp_7[5,]+asymp_7[8,])),
+          rev(ifelse((asymp_7[6,]+asymp_7[9,])<0.001,0.001,(asymp_7[6,]+asymp_7[9,])))),
+        col = rgb(33,113,181, maxColorValue=255, alpha=100), border = NA)
+
+
+legend("topleft",
+       col=c(rgb(33,113,181, maxColorValue=255),
+             rgb(107,174,214, maxColorValue=255),
+             rgb(158,202,225, maxColorValue=255),
+             rgb(198,219,239, maxColorValue=255)),
+       legend=c(expression(10^7),expression(10^6),expression(10^5),expression(10^4)),
+       lty=1, lwd=3, bty="n", cex=1.5)
