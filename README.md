@@ -1,4 +1,4 @@
-The file Models.R contains the code for the mosquito feeding model and the within-human parasite dynamics model. The mosquito feeding model defined in Models.R is required for model fitting, and both models are required for simulation of asymptomatic infections and PRCC analysis, so Models.R should be run or sourced before running other codes.
+The file Models.R contains the code for the mosquito feeding model and the within-human parasite dynamics model. The mosquito feeding model defined in Models.R is required for model fitting, and both models are required for simulation of asymptomatic infections and PRCC analysis, so Models.R should be run before running other codes.
 
 Feeding assay data.csv provides the direct feeding assay data used in model fitting, including the male and female gametocytemia (measured by PfMGET and Pfs25 qRT-PCR respectively) and the proportion of mosquitoes developing oocysts.
 
