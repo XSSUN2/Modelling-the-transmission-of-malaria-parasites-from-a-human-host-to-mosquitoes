@@ -2,15 +2,16 @@
 library(foreach)
 library(doParallel)
 library(mvtnorm)
-cl <- parallel::makeCluster(8)
+#parallel computation
+cl <- parallel::makeCluster(8) #using 8 cores
 doParallel::registerDoParallel(cl)
-parallel::stopCluster(cl)
+##parallel::stopCluster(cl)
 library(rootSolve)
 
 data <- read.csv("Feeding assay data.csv")
 
-time.step=20#generations
-n=5000#number of accetped samples 
+time.step=20 #generations
+n=5000 #number of accetped samples 
 
 #record matrix
 d_total <- matrix(0,time.step,n)
@@ -287,7 +288,6 @@ order_male <- order(as.numeric(data$Male))
 male <- as.numeric(data$Male)[order_male]
 upper_male <- oocyst_upper[order_male]
 lower_male <- oocyst_lower[order_male]
-fit <- smooth.spline(male,oocyst_median[order_male],spar=0.6)
 
 
 plot(male,oocyst_median[order_male],ylim=c(0,0.5),lty=2,type="n",xlab="Male gametocytemia /ml blood",ylab="Proportion of surviving mosquitoes\n developing oocysts",cex.axis=1.5, cex.lab=1.5, cex.main=2,yaxt="n", bty = "l")
