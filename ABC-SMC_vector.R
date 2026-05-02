@@ -131,7 +131,7 @@ prior_df <- as.data.frame(cbind(z,prior))
 names(prior_df) <- c("x","y")
 
 par(mar=c(5,5, 2,2))
-hist(para[[7]][,1],breaks=80,main="",xlim=c(0,8),ylim=c(0,400),xlab=expression(rho),cex.axis=2,cex.lab=2)
+hist(para[[8]][,1],breaks=80,main="",xlim=c(0,8),ylim=c(0,400),xlab=expression(rho),cex.axis=2,cex.lab=2)
 abline(v=0.933,col="red")
 lines(z, prior,lty=2, lwd = 1)
 legend("topright",lty=c(2,2),col=c("red",1),legend=c("Estimate","Prior"),cex=2,bty="n",lwd=2)
@@ -142,13 +142,13 @@ prior_pf_y <- rep(50,51)
 prior_pf <- as.data.frame(cbind(prior_pf_x,prior_pf_y))
 names(prior_pf) <- c("x","y")
 
-hist(para[[6]][,2],breaks=100,main="",xlab=expression(p[f]),xlim=c(0,0.5),ylim=c(0,600),cex.axis=2,cex.lab=2,yaxt="n")
+hist(para[[8]][,2],breaks=100,main="",xlab=expression(p[f]),xlim=c(0,0.5),ylim=c(0,600),cex.axis=2,cex.lab=2,yaxt="n")
 axis(2,at=c(0,200,400,600),cex.axis=2)
 lines(0:1, rep(50,2),lty=2, lwd = 1)
 abline(v=0.0954,col="red")
 legend("topright",lty=c(2,2),col=c("red",1),legend=c("Estimate","Prior"),cex=2,bty="n",lwd=2)
 
-##HDPI
+##95% HDPI
 library(HDInterval)
 hdi(para[[8]][,1], credMass = 0.95) 
 hdi(para[[8]][,2], credMass = 0.95) 
@@ -263,7 +263,7 @@ pushViewport(vplayout(2, 1)); grid.draw(g_main);   upViewport()
 pushViewport(vplayout(2, 2)); grid.draw(g_right);  upViewport()
 
 
-
+###main figures 
 oocyst_record <- matrix(0,33,5000)
 for (j in 1:33) {
   for (i in 1:5000) {
@@ -311,12 +311,6 @@ legend(
   cex = 1.5,
   bty = "n"
 )
-
-
-
-
-
-
 
 order_female <- order(as.numeric(data$Female))
 female <- as.numeric(data$Female)[order_female]
