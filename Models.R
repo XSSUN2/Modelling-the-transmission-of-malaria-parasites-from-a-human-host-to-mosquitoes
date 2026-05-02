@@ -22,10 +22,10 @@ sto_model <- function(N,mu,sd,rp,kd,f,detp,detg,detgm,detgf,m,fg,al=42,as=25,t,t
   t_sw2 <- NA_integer_
   
   for (i in 2:t) { 
-    for (j in 1:al) { #first compute asexual parasites and in this part drug is effective
-      if (j==1){ #age = 1 hour
-        # number of parasites in state 48 last time * replication rate - number of death (detp--death rate ,kd--killing effect )
-        # Here kd will be explained in the PQP file.
+    for (j in 1:al) { #compute the transition of asexual parasites
+      if (j==1){ 
+        
+        # Here kd is the killing effect of drug, which is kept in the coding but not included in this study.
         death <- rpois(1,(detp+kd[i])*rec[i-1,al])
         
         p.a.t <- (rec[i-1,al]-death)*rp
@@ -52,7 +52,7 @@ sto_model <- function(N,mu,sd,rp,kd,f,detp,detg,detgm,detgf,m,fg,al=42,as=25,t,t
         }
       }
     }
-    for (j in (al+1):(2*al-1)){ # 47 states for sexual development
+    for (j in (al+1):(2*al-1)){ # sexual-committed parasites
       #column al+1 is Pg(as+1), al+2 is Pg(as+2), ... 
       if (j==(2*al-as+1)){ # age 1 of the sexually committed parasites
         # replication 
@@ -73,14 +73,8 @@ sto_model <- function(N,mu,sd,rp,kd,f,detp,detg,detgm,detgf,m,fg,al=42,as=25,t,t
       }
     }
     # j in (2*al):(2*al+4) G1 to G5
-    #random a number to be parasites going from g1 to g2, compare with number in g1
-    #to make sure g1 has enough parasites to go to g2.
-    #the maturation rate is m
+    #the number of parasites going from g1 to g2 is randomly sampled and compared with number in g1 to make sure g1 has enough parasites to go to g2.
     g1tog2 <- min(rec[i-1,2*al],rpois(1,m*rec[i-1,2*al]))
-    #all the parasites in (Pg(as-1) - nature death (death rate is detp)) will go to state g1 
-    #+ parasites in g1 last time - nature death (death rate is detg)
-    #- parasites goes to g2
-    #= number in g1 state
     rec[i,2*al] <- max(0,rec[i-1,2*al]+rec[i-1,2*al-1]-rpois(1,detg*rec[i-1,2*al])-rpois(1,detp*rec[i-1,2*al-1])-g1tog2)
     
     #next g2, g3, g4 
@@ -133,6 +127,7 @@ sto_model <- function(N,mu,sd,rp,kd,f,detp,detg,detgm,detgf,m,fg,al=42,as=25,t,t
 
 ##mosquito feeding model and simulating the direct feeding assays
 transmission_model <- function(N, Gm, Gf, V,rho, r, alpha_go, beta_go, alpha_os, beta_os){
+  #a, b and c are parameters estimated in mosquito survival function
   a <- 0.0050300 
   b <- 0.1326802
   c <- 0.3272420
