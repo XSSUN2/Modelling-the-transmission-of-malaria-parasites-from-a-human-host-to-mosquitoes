@@ -1,4 +1,5 @@
 ###Simulation of asymptomatic infection
+source("Models.R")
 t_total <- 2880
 par(mar = c(5.1, 7, 2, 1.1))
 
