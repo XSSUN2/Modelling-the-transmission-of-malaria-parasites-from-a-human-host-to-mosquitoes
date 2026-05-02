@@ -10,7 +10,7 @@ The file `Sensitivityanalysis.R` provides the code for the PRCC analysis, identi
 
 The estimation of mosquito death rates is provided in the `supplementary` folder.
 
-This code was developed in R (version ≥ 4.2.0).
+This code was developed in R (version ≥ 4.2.0). All analyses were performed on a MacBook Pro with an Apple M1 Pro chip (8-core CPU) and 16 GB RAM. The model fitting and PRCC analysis each typically take approximately one day using parallel computation across 8 cores.
 
 
 
