@@ -95,9 +95,8 @@ human_order <- order(prcc_result[1:10])
 mos_order <- order(prcc_result[11:13])+10
 prcc_result_order <- prcc_result[c(mos_order,human_order), drop=TRUE]
 
+##record the order of t_{0.001} in high transmission settings
 order_high <- c(mos_order,human_order)
-
-
 prcc_result_order<- prcc_result[order_high, drop=TRUE]
 par(mar = c(4, 4.5, 2, 2))
 bp <- barplot(prcc_result_order, names.arg = col_names[order_high],
@@ -111,7 +110,7 @@ bp <- barplot(prcc_result_order, names.arg = col_names[order_high],
 axis(2, at = bp, labels = col_names[order_high], las = 1,cex.axis=2)
 
 ### marginal relationship
-k=1  #totally 13 parameters
+k=1  #totally 13 parameters, the order is the same as in col_names
 x <- lhs_para[,k]
 y <- t_p
 x_seq <- seq(min(x), max(x), length.out = 500)
