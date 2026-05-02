@@ -8,8 +8,7 @@ The file Simulation of asymptomatic infections.R provides the code for character
 
 The file Sensitivityanalysis.R provides the code for the PRCC analysis, which identifying the the dominant host factors determining the probability of human-to-mosquito transmission.
 
-The files Uninfected_mosquito.csv and Infected_mosquito.csv provides the mosquito survival data.
-The file Death rate.R provides estimates of mosquito death rates by fitting a Gompertz function to mosquito survival data.
+The estimation of mosquito death rates is provided in the Supplemantary folder.
 
 
 
