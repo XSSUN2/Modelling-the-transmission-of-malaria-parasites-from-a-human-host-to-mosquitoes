@@ -1,7 +1,7 @@
 library(lhs)
 library(rootSolve)
 library(truncnorm)
-
+source("Models.R")
 benchmark <- c(0.08,7,8,71,0.006,0.03,0.0004,0.007,0.02,0.2,3.4, 0.8, 0.029,13.8, 3.9, 19.3, 2.1)
 
 #PRCC transmission probability
